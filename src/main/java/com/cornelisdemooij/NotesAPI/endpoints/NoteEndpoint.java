@@ -41,4 +41,37 @@ public class NoteEndpoint {
             return Response.status(404, "No note found for id " + Long.toString(id)).build();
         }
     }
+
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response getNotes() {
+        Iterable<Note> notes = noteService.findAll();
+        return Response.ok(notes).build();
+    }
+
+    @PUT
+    @Path("{id}")
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response putNote(@PathParam("id") long id, @RequestBody Note note) {
+        try {
+            Optional<Note> optionalUpdatedNote = noteService.updateById(id, note);
+            if (optionalUpdatedNote.isPresent()) {
+                return Response.ok(true).build();
+            } else {
+                return Response.serverError().build();
+            }
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return Response.status(404, "No note found for id " + Long.toString(id)).build();
+        }
+    }
+
+    @DELETE
+    @Path("{id}")
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response deleteNote(@PathParam("id") long id) {
+        noteService.deleteById(id);
+        return Response.ok().build();
+    }
 }

@@ -24,4 +24,25 @@ public class NoteService {
     public Optional<Note> findById(Long id) {
         return noteRepository.findById(id);
     }
+
+    public Iterable<Note> findAll() {
+        return noteRepository.findAll();
+    }
+
+    public Optional<Note> updateById(Long id, Note newNote) throws Exception {
+        Optional<Note> optionalOldNote = findById(id);
+        if (optionalOldNote.isPresent()) {
+            Note oldNote = optionalOldNote.get();
+            newNote.id = oldNote.id;
+            newNote.creation = oldNote.creation;
+            newNote.modified = Timestamp.from(Instant.now());
+            return Optional.of(noteRepository.save(newNote));
+        } else {
+            throw new Exception("Error: tried to update a note that does not exist.");
+        }
+    }
+
+    public void deleteById(Long id) {
+        noteRepository.deleteById(id);
+    }
 }
