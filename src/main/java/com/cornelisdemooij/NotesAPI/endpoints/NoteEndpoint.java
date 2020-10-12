@@ -4,6 +4,8 @@ import com.cornelisdemooij.NotesAPI.model.Note;
 import com.cornelisdemooij.NotesAPI.services.NoteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.RequestBody;
+
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
@@ -14,6 +16,18 @@ import java.util.Optional;
 public class NoteEndpoint {
     @Autowired
     private NoteService noteService;
+
+    @POST
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Produces(MediaType.TEXT_PLAIN)
+    public Response postNote(@RequestBody Note note) {
+        Note result = noteService.save(note);
+        if (result != null) {
+            return Response.accepted(true).build();
+        } else {
+            return Response.serverError().build();
+        }
+    }
 
     @GET
     @Path("{id}")
