@@ -44,8 +44,13 @@ public class NoteEndpoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNotes() {
-        Iterable<Note> notes = noteService.findAll();
+    public Response getNotes(@QueryParam("title") String title) {
+        Iterable<Note> notes;
+        if (title != null) {
+            notes = noteService.findByTitle(title);
+        } else {
+            notes = noteService.findAll();
+        }
         return Response.ok(notes).build();
     }
 
