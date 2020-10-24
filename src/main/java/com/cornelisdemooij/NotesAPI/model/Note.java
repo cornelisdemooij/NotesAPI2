@@ -1,15 +1,13 @@
 package com.cornelisdemooij.NotesAPI.model;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 import java.sql.Timestamp;
 
 @Entity
 public class Note {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(updatable = false, nullable = false)
     public long id;
 
     public String title;
