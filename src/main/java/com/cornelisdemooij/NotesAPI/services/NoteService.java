@@ -26,6 +26,7 @@ public class NoteService {
     }
 
     public Iterable<Note> findByTitle(String title) { return noteRepository.findByTitle(title); }
+    public Iterable<Note> findByBody(String body) { return noteRepository.findByBody(body); }
 
     public Iterable<Note> findAll() {
         return noteRepository.findAll();
