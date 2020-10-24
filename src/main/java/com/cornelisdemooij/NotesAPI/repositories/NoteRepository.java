@@ -14,4 +14,7 @@ public interface NoteRepository extends CrudRepository<Note, Long> {
 
     @Query("SELECT n FROM Note n WHERE n.body LIKE %?1%")
     public List<Note> findByBody(String body);
+
+    @Query("SELECT n FROM Note n WHERE n.title LIKE %?1% AND n.body LIKE %?2%")
+    public List<Note> findByTitleAndBody(String title, String body);
 }

@@ -46,7 +46,9 @@ public class NoteEndpoint {
     @Produces(MediaType.APPLICATION_JSON)
     public Response getNotes(@QueryParam("title") String title, @QueryParam("body") String body) {
         Iterable<Note> notes;
-        if (title != null) {
+        if (title != null && body != null) {
+            notes = noteService.findByTitleAndBody(title, body);
+        } else if (title != null) {
             notes = noteService.findByTitle(title);
         } else if (body != null) {
             notes = noteService.findByBody(body);
