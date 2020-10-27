@@ -32,6 +32,12 @@ public class NoteService {
     public Iterable<Note> findByCreationAfter(Timestamp creationEarliest) {
         return noteRepository.findByCreationAfter(creationEarliest);
     }
+    public Iterable<Note> findByCreationBefore(Timestamp creationLatest) {
+        return noteRepository.findByCreationBefore(creationLatest);
+    }
+    public Iterable<Note> findByCreationBetween(Timestamp creationEarliest, Timestamp creationLatest) {
+        return noteRepository.findByCreationBetween(creationEarliest, creationLatest);
+    }
 
     public Iterable<Note> findAll() {
         return noteRepository.findAll();

@@ -20,4 +20,6 @@ public interface NoteRepository extends CrudRepository<Note, Long> {
     public List<Note> findByTitleAndBody(String title, String body);
 
     public List<Note> findByCreationAfter(Timestamp creationEarliest);
+    public List<Note> findByCreationBefore(Timestamp creationLatest);
+    public List<Note> findByCreationBetween(Timestamp creationEarliest, Timestamp creationLatest);
 }

@@ -48,11 +48,16 @@ public class NoteEndpoint {
     public Response getNotes(
             @QueryParam("title") String title,
             @QueryParam("body") String body,
-            @QueryParam("creation_earliest") Timestamp creationEarliest
+            @QueryParam("creation_earliest") Timestamp creationEarliest,
+            @QueryParam("creation_latest") Timestamp creationLatest
             ) {
         Iterable<Note> notes;
-        if (creationEarliest != null) {
+        if (creationEarliest != null && creationLatest != null) {
+            notes = noteService.findByCreationBetween(creationEarliest, creationLatest);
+        } else if (creationEarliest != null) {
             notes = noteService.findByCreationAfter(creationEarliest);
+        } else if (creationLatest != null) {
+            notes = noteService.findByCreationBefore(creationLatest);
         } else if (title != null && body != null) {
             notes = noteService.findByTitleAndBody(title, body);
         } else if (title != null) {
