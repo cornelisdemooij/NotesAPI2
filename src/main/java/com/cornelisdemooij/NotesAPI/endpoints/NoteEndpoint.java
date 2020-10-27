@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import javax.ws.rs.*;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.sql.Timestamp;
 import java.util.Optional;
 
 @Path("note")
@@ -44,9 +45,15 @@ public class NoteEndpoint {
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response getNotes(@QueryParam("title") String title, @QueryParam("body") String body) {
+    public Response getNotes(
+            @QueryParam("title") String title,
+            @QueryParam("body") String body,
+            @QueryParam("creation_earliest") Timestamp creationEarliest
+            ) {
         Iterable<Note> notes;
-        if (title != null && body != null) {
+        if (creationEarliest != null) {
+            notes = noteService.findByCreationAfter(creationEarliest);
+        } else if (title != null && body != null) {
             notes = noteService.findByTitleAndBody(title, body);
         } else if (title != null) {
             notes = noteService.findByTitle(title);

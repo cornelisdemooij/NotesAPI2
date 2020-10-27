@@ -29,6 +29,10 @@ public class NoteService {
     public Iterable<Note> findByBody(String body) { return noteRepository.findByBody(body); }
     public Iterable<Note> findByTitleAndBody(String title, String body) { return noteRepository.findByTitleAndBody(title, body); }
 
+    public Iterable<Note> findByCreationAfter(Timestamp creationEarliest) {
+        return noteRepository.findByCreationAfter(creationEarliest);
+    }
+
     public Iterable<Note> findAll() {
         return noteRepository.findAll();
     }
