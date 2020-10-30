@@ -16,9 +16,13 @@ public class NoteService {
     private NoteRepository noteRepository;
 
     public Note save(Note note) {
+        note = saveHelper(note);
+        return noteRepository.save(note);
+    }
+    public Note saveHelper(Note note) {
         note.creation = Timestamp.from(Instant.now());
         note.modified = Timestamp.from(Instant.now());
-        return noteRepository.save(note);
+        return note;
     }
 
     public Optional<Note> findById(Long id) {
@@ -47,13 +51,17 @@ public class NoteService {
         Optional<Note> optionalOldNote = findById(id);
         if (optionalOldNote.isPresent()) {
             Note oldNote = optionalOldNote.get();
-            newNote.id = oldNote.id;
-            newNote.creation = oldNote.creation;
-            newNote.modified = Timestamp.from(Instant.now());
+            newNote = updateByIdHelper(oldNote, newNote);
             return Optional.of(noteRepository.save(newNote));
         } else {
             throw new Exception("Error: tried to update a note that does not exist.");
         }
+    }
+    public Note updateByIdHelper(Note oldNote, Note newNote) {
+        newNote.id = oldNote.id;
+        newNote.creation = oldNote.creation;
+        newNote.modified = Timestamp.from(Instant.now());
+        return newNote;
     }
 
     public void deleteById(Long id) {
