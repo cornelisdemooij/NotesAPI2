@@ -24,7 +24,7 @@ public class NoteEndpoint {
     public Response postNote(@RequestBody Note note) {
         Note result = noteService.save(note);
         if (result != null) {
-            return Response.accepted(true).build();
+            return Response.accepted(result).build();
         } else {
             return Response.serverError().build();
         }
