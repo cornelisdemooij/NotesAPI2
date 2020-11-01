@@ -22,10 +22,14 @@ public class NoteEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response postNote(@RequestBody Note note) {
-        Note result = noteService.save(note);
-        if (result != null) {
-            return Response.accepted(result).build();
-        } else {
+        try {
+            Note result = noteService.save(note);
+            if (result != null) {
+                return Response.accepted(result).build();
+            } else {
+                return Response.serverError().build();
+            }
+        } catch(Exception e) {
             return Response.serverError().build();
         }
     }
