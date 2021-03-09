@@ -22,9 +22,9 @@ public class NoteEndpoint {
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.TEXT_PLAIN)
     public Response postNote(@RequestBody Note note) {
-        Note result = noteService.save(note);
-        if (result != null) {
-            return Response.accepted(true).build();
+        boolean result = noteService.save(note);
+        if (result) {
+            return Response.accepted().build();
         } else {
             return Response.serverError().build();
         }
@@ -76,9 +76,9 @@ public class NoteEndpoint {
     @Produces(MediaType.TEXT_PLAIN)
     public Response putNote(@PathParam("id") long id, @RequestBody Note note) {
         try {
-            Optional<Note> optionalUpdatedNote = noteService.updateById(id, note);
-            if (optionalUpdatedNote.isPresent()) {
-                return Response.ok(true).build();
+            boolean result = noteService.updateById(id, note);
+            if (result) {
+                return Response.ok().build();
             } else {
                 return Response.serverError().build();
             }
@@ -92,7 +92,16 @@ public class NoteEndpoint {
     @Path("{id}")
     @Produces(MediaType.TEXT_PLAIN)
     public Response deleteNote(@PathParam("id") long id) {
-        noteService.deleteById(id);
-        return Response.ok().build();
+        try {
+            boolean result = noteService.deleteById(id);
+            if (result) {
+                return Response.ok().build();
+            } else {
+                return Response.serverError().build();
+            }
+        } catch(Exception e) {
+            System.out.println(e.getMessage());
+            return Response.status(404, "No note found for id " + Long.toString(id)).build();
+        }
     }
 }
